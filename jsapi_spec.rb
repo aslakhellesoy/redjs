@@ -601,6 +601,11 @@ describe "Ruby Javascript API" do
       wrapper.new(5)['value'].should == 5
     end
 
+    it "can instantiate javascript objects and call functions that access this" do
+      wrapper = @cxt.eval('(function Wrapper(value) {this.value = value; this.val = function(){return this.value;}})')
+      wrapper.new(5)['val'].call.should == 5
+    end
+
     it "can call a javascript method directly from a ruby object" do
       obj = @cxt.eval('Object').new
       obj.should respond_to(:toString)
